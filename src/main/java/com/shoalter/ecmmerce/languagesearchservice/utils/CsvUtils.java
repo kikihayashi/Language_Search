@@ -2,6 +2,8 @@ package com.shoalter.ecmmerce.languagesearchservice.utils;
 
 import com.shoalter.ecmmerce.languagesearchservice.constants.Constant;
 import com.shoalter.ecmmerce.languagesearchservice.dto.SearchResultDto;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class CsvUtils {
 
     public static final List<String> CSV_COLUMN_LIST = List.of(
@@ -115,7 +118,7 @@ public class CsvUtils {
             writeCsvFile(Paths.get(directoryPath, outputFileName), combinedData);
             System.out.println("合併完成:\n" + outputFileName);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("[combineCsvFiles] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 

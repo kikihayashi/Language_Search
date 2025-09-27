@@ -2,6 +2,8 @@ package com.shoalter.ecmmerce.languagesearchservice.service;
 
 import com.shoalter.ecmmerce.languagesearchservice.constants.Constant;
 import com.shoalter.ecmmerce.languagesearchservice.utils.CsvUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+@Slf4j
 public class CheckService {
 
     public static void run() {
@@ -63,7 +66,7 @@ public class CheckService {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("[csvDataCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -174,7 +177,7 @@ public class CheckService {
                         });
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("[specificPathCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 }

@@ -6,11 +6,13 @@ import com.shoalter.ecmmerce.languagesearchservice.strategy.I18nSearchStrategy;
 import com.shoalter.ecmmerce.languagesearchservice.strategy.RepositorySearchStrategy;
 import com.shoalter.ecmmerce.languagesearchservice.strategy.SearchStrategy;
 import com.shoalter.ecmmerce.languagesearchservice.utils.CsvUtils;
-import com.shoalter.ecmmerce.languagesearchservice.utils.PrintUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SearchService {
 
     private static final List<SearchStrategy> searchStratrgyList = List.of(
@@ -29,7 +31,7 @@ public class SearchService {
                         CsvUtils.generateReport();
                         CsvUtils.generateCSV(results, strategy.getStrategyName());
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        log.info("[SearchService] Stack:[{}]", ExceptionUtils.getStackTrace(e));
                     }
                 }
         );
