@@ -1,15 +1,17 @@
 package com.shoalter.ecmmerce.languagesearchservice.utils;
 
 import com.shoalter.ecmmerce.languagesearchservice.dto.SearchResultDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class PrintUtils {
 
     public static void printResult(Map<String, List<SearchResultDto>> results) {
         if (results.isEmpty()) {
-            System.out.println("未找到任何結果");
+            log.info("[printResult] 未找到任何結果");
         } else {
             results.forEach((serviceName, searchResultDtoList) -> {
                 String nowClassName = "";
@@ -17,20 +19,20 @@ public class PrintUtils {
                 for (SearchResultDto searchResultDto : searchResultDtoList) {
                     if (nowClassName.isEmpty() || !nowClassName.equals(searchResultDto.className())) {
                         nowClassName = searchResultDto.className();
-                        System.out.println("--------------------------------------------------------------------------------");
-                        System.out.println("Service: " + serviceName);
-                        System.out.println("FilePath: " + nowClassName);
-                        System.out.println("Method: ");
+                        log.info("[printResult]--------------------------------------------------------------------------------");
+                        log.info("[printResult] Service: {}", serviceName);
+                        log.info("[printResult] FilePath: {}", nowClassName);
+                        log.info("[printResult] Method: ");
                         index = 1;
                     }
-                    System.out.println("    " + (index++) + ". " + searchResultDto.methodName());
-                    System.out.println("     --> keyword: " + searchResultDto.keyword().trim());
+                    log.info("[printResult]       {}  . {}", (index++), searchResultDto.methodName());
+                    log.info("[printResult]      --> keyword: {}", searchResultDto.keyword().trim());
                 }
             });
         }
     }
 
     public static void showExecuteStrategy(String strategyName) {
-        System.out.println("執行策略：" + strategyName);
+        log.info("[printResult] 執行策略：{}", strategyName);
     }
 }

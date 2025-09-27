@@ -31,7 +31,7 @@ public class SearchService {
                         CsvUtils.generateReport();
                         CsvUtils.generateCSV(results, strategy.getStrategyName());
                     } catch (Exception e) {
-                        log.info("[SearchService] Stack:[{}]", ExceptionUtils.getStackTrace(e));
+                        log.error("[SearchService] Stack:[{}]", ExceptionUtils.getStackTrace(e));
                     }
                 }
         );

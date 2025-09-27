@@ -55,18 +55,18 @@ public class CheckService {
 
                 Map<String, List<Integer>> combinedRowData = getCombinedRowData(csvData, filePathIndex, methodNameIndex);
                 Map<Integer, String> rowDictionary = getRowDictionary(csvData, filePathIndex, methodNameIndex);
-                System.out.println("總共有" + rowDictionary.size() + " 筆資料\n");
+                log.info("[csvDataCheck] 總共有{}筆資料", rowDictionary.size());
 
                 showDifferentData(combinedRowData, rowDictionary);
 
                 if (combinedRowData.size() == csvData.size()) {
-                    System.out.println("檔案：" + csvFile.getFileName() + " 沒有重複的資料\n");
+                    log.info("[csvDataCheck] 檔案：{}沒有重複的資料", csvFile.getFileName());
                 } else {
 //                    showDuplicateData(csvFile, combinedRowData);
                 }
             }
         } catch (Exception e) {
-            log.info("[csvDataCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
+            log.error("[csvDataCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -91,10 +91,10 @@ public class CheckService {
                 if (lineNumber > 507) {
                     String filePath = dictionary.get(lineNumber).split("\\|")[0];
                     String methodName = dictionary.get(lineNumber).split("\\|")[1];
-                    System.out.println("第" + i + "個不重複的新資料");
-                    System.out.println("位置: " + filePath);
-                    System.out.println("方法: " + methodName);
-                    System.out.println("行號: " + lineNumber + "\n");
+                    log.info("[showDifferentData] 第{}個不重複的新資料", i);
+                    log.info("[showDifferentData] 位置:{}", filePath);
+                    log.info("[showDifferentData] 方法:{}", methodName);
+                    log.info("[showDifferentData] 行號:{}", lineNumber);
                     i++;
                 }
             }
@@ -102,15 +102,15 @@ public class CheckService {
     }
 
     private static void showDuplicateData(Path csvFile, Map<String, List<Integer>> combinedValues) {
-        System.out.println("檔案: " + csvFile.getFileName() + " 有重複的資料");
+        log.info("[showDuplicateData] 檔案:{} 有重複的資料", csvFile.getFileName());
         combinedValues.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().size() > 1)
                 .forEach(entry -> {
                     String key = entry.getKey();
-                    System.out.println("位置: " + key.split("\\|")[0]);
-                    System.out.println("方法: " + key.split("\\|")[1]);
-                    System.out.println("行號: " + entry.getValue() + "\n");
+                    log.info("[showDuplicateData] 位置:{}", key.split("\\|")[0]);
+                    log.info("[showDuplicateData] 方法:{}", key.split("\\|")[1]);
+                    log.info("[showDuplicateData] 行號:{}", entry.getValue());
                 });
     }
 
@@ -141,7 +141,7 @@ public class CheckService {
             List<Path> csvFiles = CsvUtils.getCsvFiles(Constant.REPORT_PATH);
 
             for (Path csvFile : csvFiles) {
-                System.out.println("檢查檔案: " + csvFile.getFileName());
+                log.info("[specificPathCheck] 檢查檔案:{}", csvFile.getFileName());
 
                 // 讀取 CSV 檔案
                 List<String[]> rows = CsvUtils.readCsvFile(csvFile);
@@ -163,21 +163,20 @@ public class CheckService {
 
                 long count = data.stream().filter(predicate).count();
                 if (count == 0) {
-                    System.out.println("都在指定目錄中\n");
+                    log.info("[specificPathCheck] 都在指定目錄中");
                     continue;
                 }
 
-                System.out.println("有" + count + "筆資料不在指定目錄中");
+                log.info("[specificPathCheck] 有{}筆資料不在指定目錄中", count);
                 data.stream().filter(predicate)
                         .forEach(row -> {
-                            System.out.println("服務: " + row[serviceNameIndex]);
-                            System.out.println("位置: " + row[filePathIndex]);
-                            System.out.println("方法: " + row[methodNameIndex]);
-                            System.out.println();
+                            log.info("[specificPathCheck] 服務:{}", row[serviceNameIndex]);
+                            log.info("[specificPathCheck] 位置:{}", row[filePathIndex]);
+                            log.info("[specificPathCheck] 方法:{}", row[methodNameIndex]);
                         });
             }
         } catch (Exception e) {
-            log.info("[specificPathCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
+            log.error("[specificPathCheck] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 }

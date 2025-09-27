@@ -4,18 +4,16 @@ import com.shoalter.ecmmerce.languagesearchservice.constants.Constant;
 import com.shoalter.ecmmerce.languagesearchservice.dto.SearchResultDto;
 import com.shoalter.ecmmerce.languagesearchservice.dto.ServiceFileDto;
 import com.shoalter.ecmmerce.languagesearchservice.utils.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class RepositorySearchStrategy implements SearchStrategy {
     private static final String STRATEGY_NAME = "repository";
 
@@ -81,7 +79,7 @@ public class RepositorySearchStrategy implements SearchStrategy {
                         String newSqlCommand = filterSqlCommand(sqlCommand);
                         matchingMethods.add(new SearchResultDto(serviceName, filePath, methodName, newSqlCommand));
                     } else {
-                        System.out.println(filePath + "：SQL語法找不到對應的方法名稱 -->" + sqlCommand);
+                        log.info("[searchKeywordInJavaFile] {} SQL語法找不到對應的方法名稱 --> {}", filePath ,sqlCommand);
                     }
                 }
             }

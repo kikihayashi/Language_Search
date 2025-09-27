@@ -2,7 +2,9 @@ package com.shoalter.ecmmerce.languagesearchservice;
 
 import com.shoalter.ecmmerce.languagesearchservice.service.CheckService;
 import com.shoalter.ecmmerce.languagesearchservice.service.SearchService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LanguageSearchApplication {
 
     public static void main(String[] args) {
@@ -11,10 +13,10 @@ public class LanguageSearchApplication {
     }
 
     private static void runService(String serviceName, Runnable service) {
-        System.out.println("Start running " + serviceName);
+        log.info("[runService] Start running {}", serviceName);
         long startTime = System.currentTimeMillis();
         service.run();
         long endTime = System.currentTimeMillis();
-        System.out.printf("%s has finished running, spent time: %d ms%n%n", serviceName, (endTime - startTime));
+        log.info("[runService] {} has finished running, spent time: {} ms", serviceName, (endTime - startTime));
     }
 }

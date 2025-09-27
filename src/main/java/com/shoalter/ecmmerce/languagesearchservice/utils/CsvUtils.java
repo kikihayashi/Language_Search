@@ -5,11 +5,7 @@ import com.shoalter.ecmmerce.languagesearchservice.dto.SearchResultDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -95,13 +91,13 @@ public class CsvUtils {
             Path repositoryFile = findCurrentTimeClosestFile(files, repositoryPrefix);
 
             if (i18nFile == null || repositoryFile == null) {
-                System.out.println("未找到所需檔案，請檢查目錄內容");
+                log.info("[combineCsvFiles] 未找到所需檔案，請檢查目錄內容");
                 return;
             }
 
-            System.out.println("合併檔案:");
-            System.out.println(i18nFile.getFileName());
-            System.out.println(repositoryFile.getFileName());
+            log.info("[combineCsvFiles] 合併檔案");
+            log.info("[combineCsvFiles] i18nFileName:[{}]", i18nFile.getFileName());
+            log.info("[combineCsvFiles] repositoryFileName:[{}]", repositoryFile.getFileName());
 
             // 讀取並合併資料
             List<String[]> i18nData = readCsvFile(i18nFile);
@@ -116,9 +112,9 @@ public class CsvUtils {
             // 輸出結果
             String outputFileName = "search_all_results_" + System.currentTimeMillis() + ".csv";
             writeCsvFile(Paths.get(directoryPath, outputFileName), combinedData);
-            System.out.println("合併完成:\n" + outputFileName);
+            log.info("[combineCsvFiles] 合併完成:[{}]", outputFileName);
         } catch (Exception e) {
-            log.info("[combineCsvFiles] Stack:[{}]", ExceptionUtils.getStackTrace(e));
+            log.error("[combineCsvFiles] Stack:[{}]", ExceptionUtils.getStackTrace(e));
         }
     }
 
